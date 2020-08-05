@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var {title} = require('../models/titles');
 var {contest} = require('../models/contest');
+require('dotenv').config();
 var nodemailer= require('nodemailer');
 var smtpTransport = nodemailer.createTransport({
   service: "Gmail",
@@ -10,6 +11,7 @@ var smtpTransport = nodemailer.createTransport({
       pass: "Grids@7788"
   }
 });
+
 /* GET home page. */
 router.get('/', function(req, res, next) {
   res.render('index', { title: 'Express' });
@@ -49,7 +51,7 @@ await user.save();
   let userData = await contest.findById({_id:user._id}).populate('title','title');
 mailOptions = {
   from: 'Giridharan@gridsandguides.com', // sender address
-  to: "giridharan223@gmail.com", // list of receivers
+  to: "balaprabakark@blacksheepvalue.com", // list of receivers
   subject: "BLACKSHEEP'S PAER SOLLUM PADAM", // plain text body
   html:`<h3>User Details</h3><p>First Name : ${userData.firstName}</p><p>Last Name : ${userData.lastName}</p><p>Age : ${userData.age}</p><p>Email : ${userData.email}</p><p>Phone No : ${userData.phone}</p><p>Title : ${userData.title.title}</p>` // html body
 };
