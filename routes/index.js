@@ -54,12 +54,13 @@ router.post('/contest', async (req, res) => {
           await user.save();
           let userData = await contest.findById({ _id: user._id }).populate('title', 'title');
          let maillist = [
+           'shortfilms@blacksheepvalue.com',
             'jayaprakash@blacksheepvalue.com',
             'Samprabha@blacksheepvalue.com'
           ]
         
           mailOptions = {
-            from: 'Giridharan@gridsandguides.com', // sender address shortfilms@blacksheepvalue.com
+            from: 'Giridharan@gridsandguides.com', // sender address 
             to: "", // list of receivers
             subject: "BLACKSHEEP'S PAER SOLLUM PADAM", // plain text body
             html: `<h3>User Details</h3><p>First Name : ${userData.firstName}</p><p>Last Name : ${userData.lastName}</p><p>Age : ${userData.age}</p><p>Email : ${userData.email}</p><p>Phone No : ${userData.phone}</p><p>Title : ${userData.title.title}</p>` // html body
