@@ -48,31 +48,39 @@ router.post('/contest', async (req, res) => {
       res.status(200).json({ message: "User Already Exists", code: 2 })
     } else {
       if (req.body.firstName) {
-        let user = await new contest(req.body);
-
+        req.body.age = Number(req.body.age);
+        let user = new contest(req.body);
         if (user) {
           await user.save();
           let userData = await contest.findById({ _id: user._id }).populate('title', 'title');
+         let maillist = [
+            'jayaprakash@blacksheepvalue.com',
+            'Samprabha@blacksheepvalue.com'
+          ]
+        
           mailOptions = {
-            from: 'Giridharan@gridsandguides.com', // sender address
-            to: "shortfilms@blacksheepvalue.com", // list of receivers
+            from: 'Giridharan@gridsandguides.com', // sender address shortfilms@blacksheepvalue.com
+            to: "", // list of receivers
             subject: "BLACKSHEEP'S PAER SOLLUM PADAM", // plain text body
             html: `<h3>User Details</h3><p>First Name : ${userData.firstName}</p><p>Last Name : ${userData.lastName}</p><p>Age : ${userData.age}</p><p>Email : ${userData.email}</p><p>Phone No : ${userData.phone}</p><p>Title : ${userData.title.title}</p>` // html body
           };
-          smtpTransport.sendMail(mailOptions, function (error, response) {
-            if (error) {
-              console.log(error);
-              res.status(500).send('Error');
-            } else {
-              console.log("Message sent: " + response.message);
-              res.status(200).json({message:'success',code:1});
-            }
+          maillist.forEach(function (to, i , array) {
+            mailOptions.to = to;
+            smtpTransport.sendMail(mailOptions, function (err) {
+              if (err) { 
+                console.log('Sending to ' + to + ' failed: ' + err);
+              } else { 
+                console.log('Sent to ' + to);
+              }
+              if (i == maillist.length - 1) { 
+                res.status(200).json({message:'Successfully Uploaded'})
+                msg.transport.close();
+              }
+            });
           })
         }
-
-
       } else {
-        throw error
+        throw new Error('Failed to Save User')
       }
     }
   } catch (error) {

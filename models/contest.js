@@ -6,7 +6,7 @@ const contestSchema = new mongoose.Schema({
   }, lastName: {
     type: String
   }, age: {
-    type: String
+    type: Number
   },
   email: {
     type: String,
