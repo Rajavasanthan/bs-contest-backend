@@ -73,12 +73,12 @@ router.post('/contest', async (req, res) => {
                 console.log('Sent to ' + to);
               }
               if (i == maillist.length - 1) { 
-                res.status(200).json({message:'Successfully Uploaded'})
                 msg.transport.close();
               }
             });
           })
         }
+        res.status(200).json({message:'Successfully Uploaded'})
       } else {
         throw new Error('Failed to Save User')
       }
